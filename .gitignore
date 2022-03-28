@@ -1,0 +1,10 @@
+data
+figures
+reports
+log_check_*
+system_check.txt
+playground.ipynb
+__pycache__
+.doit.db*
+.DS_Store
+*.xlsx
