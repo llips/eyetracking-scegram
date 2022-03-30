@@ -14,9 +14,6 @@ args = parser.parse_args()
 
 analysis_metrics = pd.read_csv(fname.analysis_metrics, sep="\t")
 
-#analysis_metrics[analysis_metrics['BLOCK']==args.block].groupby('CATEGORY')['FIRST_FIXATION_ROI_DURATION'].mean()[['CON', 'SEM', 'SYN', 'SEMSYN', 'EXSYN', 'EXSEMSYN']].plot(kind='bar', figsize=(10,6), fontsize=13, rot=0, title='Duration of first fixation in roi', ylabel='Time',
-#         xlabel='Consistency Category', ylim=(0,5)).get_figure().savefig(fname.figure_first_fixation_duration_roi(block=args.block))
-
 category = "CATEGORY"
 variable = "FIRST_FIXATION_ROI_DURATION"
 ylabel = "First Fixation Duration"

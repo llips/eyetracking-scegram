@@ -1,6 +1,6 @@
 data
 figures
-reports
+tables
 log_check_*
 system_check.txt
 playground.ipynb

@@ -14,10 +14,6 @@ args = parser.parse_args()
 
 analysis_metrics = pd.read_csv(fname.analysis_metrics, sep="\t")
 
-#analysis_metrics[analysis_metrics['BLOCK']==args.block].groupby('CATEGORY')['DWELL_TIME'].mean()[['CON', 'SEM', 'SYN', 'SEMSYN', 'EXSYN', 'EXSEMSYN']].plot(kind='bar', figsize=(10,6), fontsize=13, rot=0, title='Dwell Time', ylabel='Mean Dwell Time (in seconds)',
-#         xlabel='Consistency Category', ylim=(0,6)).get_figure().savefig(fname.figure_dwell_time(block=args.block))
-
-
 category = "CATEGORY"
 variable = "DWELL_TIME"
 ylabel = "Mean Dwell Time"

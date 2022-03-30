@@ -15,11 +15,6 @@ args = parser.parse_args()
 
 analysis_metrics = pd.read_csv(fname.analysis_metrics, sep="\t")
 
-#plt.rcParams['figure.figsize'] = [600, 600]
-
-#analysis_metrics[analysis_metrics['BLOCK']==args.block].groupby('CATEGORY')['TTFF'].mean()[['CON', 'SEM', 'SYN', 'SEMSYN', 'EXSYN', 'EXSEMSYN']].plot(kind='bar', figsize=(10, 6), fontsize=13, rot=0, title='Time To First Fixation', ylabel='Mean First Fixation (in seconds)',
-#         xlabel='Consistency Category', ylim=(0, 2)).get_figure().savefig(fname.figure_ttff(block=args.block))
-
 category = "CATEGORY"
 variable = "TTFF"
 ylabel = "Time to First Fixation"

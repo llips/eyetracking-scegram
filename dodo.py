@@ -5,7 +5,7 @@ Definition of dodo tasks
 from config import fname, subjects, blocks
 
 
-DOIT_CONFIG = {'default_tasks': ['check_logs', 'preprocess', 'analyse', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi']}
+DOIT_CONFIG = {'default_tasks': ['check_logs', 'preprocess', 'analyse', 'analyse_subjects', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi']}
 
 
 def task_check():
@@ -55,17 +55,17 @@ def task_analyse():
         actions=['python 02_analysis.py'],
     )
 
-# def task_analyse():
-#     """
-#     Compute analytic metrics
-#     """
-#     for subject in subjects:
-#         yield dict(
-#             name=f'subject-{subject:d}',
-#             file_dep=['02_analysis.py'],
-#             targets=[fname.analysis_metrics(subject=subject)],
-#             actions=[f'python 02_analysis.py {subject}'],
-#         )
+def task_analyse_subjects():
+    """
+    Compute analytic metrics for subjects
+    """
+    for block in blocks:
+        yield dict(
+            name=f'block-{block}',
+            file_dep=['02a_subjects.py'],
+            #targets=[],
+            actions=[f'python 02a_subjects.py {block}'],
+        )
 
 
 def task_averages():

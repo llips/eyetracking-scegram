@@ -4,6 +4,7 @@ import matplotlib.image as mpimg
 from argparse import ArgumentParser
 
 from config import fname, subjects, blocks, display_resolution, image_size
+from helpers import I_DT
 
 
 # parser = ArgumentParser(__doc__)
@@ -44,6 +45,20 @@ for subject in subjects:
 
             data_image = processed_data_subject.copy()[((processed_data_subject['TIME'] >= start_time) & (processed_data_subject['TIME'] <= end_time))]
 
+
+            # compute fixations
+            fixations, _ = I_DT([data_image['BPOGX'], data_image['BPOGY']], 0.2, 10)
+
+            fixations_list = []
+            for (fs, fe) in fixations:
+                start_time_fixation = data_image.TIME.iloc[fs]
+                end_time_fixation = data_image.TIME.iloc[fe]
+                data_fixation = data_image.copy()[((data_image['TIME'] >= start_time_fixation) & (data_image['TIME'] <= end_time_fixation))]
+                row = pd.DataFrame([[start_time_fixation, end_time_fixation, end_time_fixation - start_time_fixation, data_fixation.mean().BPOGX, data_fixation.mean().BPOGY]], columns=('START', 'END', 'DURATION', 'X', 'Y'))
+                fixations_list.append(row)
+
+            fixations_data = pd.concat(fixations_list).reset_index()
+
             # region of interest
             x = image_information['obj_x_center'].item()
             y = image_information['obj_y_center'].item()
@@ -51,12 +66,23 @@ for subject in subjects:
             height = image_information['obj_height'].item()
 
 
-            # plotting
+            # plotting gazepoints
             fig, ax = plt.subplots()
             ax.plot(data_image['BPOGX']*1920 , 1080-data_image['BPOGY']*1080, 'x-', color='yellow', zorder=1, alpha=0.25)
             ax.imshow(imgs[image], extent=[448, 1472, 156, 924])
             rectangle = plt.Rectangle((x+448-width/2, 924-y+-height/2), width, height, ec="red", fc="none", alpha=0.5, zorder=3)
             ax.add_patch(rectangle)
             ax.set_title(image, fontsize=10)
-            fig.savefig(fname.figure_stimulus_image(image=image, subject=subject, block=block))
+            fig.savefig(fname.figure_stimulus_gazepoint_image(image=image, subject=subject, block=block))
+            plt.close()
+
+
+            # plotting fixations
+            fig, ax = plt.subplots()
+            ax.plot((fixations_data['X'])*1920 , 1080-(fixations_data['Y'])*1080, 'x-', color='yellow', zorder=1, alpha=0.5)
+            ax.imshow(imgs[image], extent=[448, 1472, 156, 924])
+            rectangle = plt.Rectangle((x+448-width/2, 924-y+-height/2), width, height, ec="red", fc="none", alpha=0.5, zorder=3)
+            ax.add_patch(rectangle)
+            ax.set_title(image, fontsize=10)
+            fig.savefig(fname.figure_stimulus_fixations_image(image=image, subject=subject, block=block))
             plt.close()

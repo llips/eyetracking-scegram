@@ -19,7 +19,7 @@ with open('./requirements.txt') as f:
 pkg_resources.working_set.require(dependencies)
 
 # Check that the data is present on the system
-from config import fname
+from config import fname, subjects, blocks
 if not os.path.exists(fname.raw_data_dir):
     raise ValueError('The `raw_data_dir` points to a directory that does not exist: ' + fname.raw_data_dir)
 
@@ -27,7 +27,11 @@ if not os.path.exists(fname.raw_data_dir):
 os.makedirs(fname.fixed_data_dir, exist_ok=True)
 os.makedirs(fname.processed_data_dir, exist_ok=True)
 os.makedirs(fname.figures_dir, exist_ok=True)
-os.makedirs(fname.reports_dir, exist_ok=True)
+os.makedirs(fname.tables_dir, exist_ok=True)
+
+for subject in subjects:
+    for block in blocks:
+        os.makedirs(fname.figures_subject_block_dir(subject=subject, block=block), exist_ok=True)
 
 # Prints some information about the system
 import mne

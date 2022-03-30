@@ -14,9 +14,6 @@ args = parser.parse_args()
 
 analysis_metrics = pd.read_csv(fname.analysis_metrics, sep="\t")
 
-#analysis_metrics[analysis_metrics['BLOCK']==args.block].groupby('CATEGORY')['FIXATION_ROI_COUNT'].mean()[['CON', 'SEM', 'SYN', 'SEMSYN', 'EXSYN', 'EXSEMSYN']].plot(kind='bar', figsize=(10,6), fontsize=13, rot=0, title='Number of fixations in roi', ylabel='Count',
-#         xlabel='Consistency Category', ylim=(0,5)).get_figure().savefig(fname.figure_fixation_roi_count(block=args.block))
-
 category = "CATEGORY"
 variable = "FIXATION_ROI_COUNT"
 ylabel = "#Fixations ROI"

@@ -42,6 +42,13 @@ for subject in subjects:
             fixcross_end_idx = processed_data_subject.USER.where(processed_data_subject.USER==f"FIXATION_END_BLOCK_{block}_{image}").first_valid_index()
             fixcross_end_time = processed_data_subject.TIME.iloc[fixcross_end_idx]
 
+            # compute offset from fixation cross
+            fixation_image = processed_data_subject.copy()[((processed_data_subject['TIME'] >= fixcross_start_time) & (processed_data_subject['TIME'] <= fixcross_end_time))]
+
+            #x_offset = fixation_image.mean()['BPOGX'] - 0.5
+            #y_offset = fixation_image.mean()['BPOGY'] - 0.5
+
+
             # eye tracking data from stimulus onset till offset
             start_idx = processed_data_subject.USER.where(processed_data_subject.USER==f"STIMULI_ONSET_BLOCK_{block}_{image}").first_valid_index()
             start_time = processed_data_subject.TIME.iloc[start_idx]
@@ -52,6 +59,7 @@ for subject in subjects:
             data_image = processed_data_subject.copy()[((processed_data_subject['TIME'] >= start_time) & (processed_data_subject['TIME'] <= end_time))]
 
 
+            # compute fixations of scene image
             fixations, _ = I_DT([data_image['BPOGX'], data_image['BPOGY']], 0.2, 10)
 
             fixations_list = []
@@ -63,6 +71,10 @@ for subject in subjects:
                 fixations_list.append(row)
 
             fixations_data = pd.concat(fixations_list).reset_index()
+
+            # apply offset
+            #fixations_data['X'] -= x_offset
+            #fixations_data['Y'] -= y_offset
 
             # region of interest
             x = image_information['obj_x_center'].item()

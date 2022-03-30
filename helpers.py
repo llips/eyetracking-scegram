@@ -15,7 +15,7 @@ def is_in_roi(x, y, roi_x, roi_y, roi_width, roi_height):
 
 def fill_between(df, search_column, change_column, start_str, end_str, fill_str=None):
     """
-    TODO: Description
+    Fill columns between two events with corresponding type
     """
     starts = list(df[df[search_column] == start_str].index)
     ends = list(df[df[search_column] == end_str].index)
@@ -38,6 +38,9 @@ def px_to_deg(distance, size_in_px, px_density):
 
 
 def I_DT(samples, disp_t, dur_t):
+    """
+    I_DT adapted from Sophia
+    """
     
     reached_the_end=False
     win_start=0
@@ -82,6 +85,9 @@ def get_samples(start,end,smpls):
 
 
 def plot(data, data_std, category, variable, ylabel, ymax, filename):
+    """
+    Customized plots
+    """
     labels = data[category]
     values = data[variable]
 
@@ -97,7 +103,7 @@ def plot(data, data_std, category, variable, ylabel, ymax, filename):
 
     for p in plt.gca().patches:
         plt.gca().annotate(
-            f"{(p.get_height()):.1f}", 
+            f"{(p.get_height()):.2f}", 
             (p.get_x() + p.get_width() / 2., p.get_height() + 1.1*data_std.max()), 
             ha = 'center', va = 'center', 
             xytext = (0, 9), 
