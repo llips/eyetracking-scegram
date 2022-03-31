@@ -5,7 +5,7 @@ Definition of dodo tasks
 from config import fname, subjects, blocks
 
 
-DOIT_CONFIG = {'default_tasks': ['check_logs', 'preprocess', 'analyse', 'analyse_subjects', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi']}
+DOIT_CONFIG = {'default_tasks': ['check', 'check_logs', 'preprocess', 'analyse', 'analyse_subjects', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi', 'figure_diff', 'figure_cross', 'figure_scenes']}
 
 
 def task_check():
@@ -151,4 +151,31 @@ def task_figure_average_fixation_duration_roi():
             file_dep=[fname.analysis_metrics, '09_figure_average_fixation_duration.py'],
             targets=[fname.figure_average_fixation_duration_roi(block=block)],
             actions=[f'python 09_figure_average_fixation_duration.py {block}'],
+    )
+
+def task_figure_diff():
+    """
+    Create plots of difference between block A and B
+    """
+    return dict(
+        file_dep=[fname.analysis_metrics, '10_figure_differences.py'],
+        actions=['python 10_figure_differences.py'],
+    )
+
+def task_figure_cross():
+    """
+    Create plots of gazepoints on fixation cross
+    """
+    return dict(
+        file_dep=[fname.analysis_metrics, '11_figure_cross.py'],
+        actions=['python 11_figure_cross.py'],
+    )
+
+def task_figure_scenes():
+    """
+    Create plots of fixations on scenes
+    """
+    return dict(
+        file_dep=[fname.analysis_metrics, '12_figure_scenes.py'],
+        actions=['python 12_figure_scenes.py'],
     )
