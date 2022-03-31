@@ -43,11 +43,9 @@ for subject in subjects:
             fixcross_end_time = processed_data_subject.TIME.iloc[fixcross_end_idx]
 
             # compute offset from fixation cross
-            fixation_image = processed_data_subject.copy()[((processed_data_subject['TIME'] >= fixcross_start_time) & (processed_data_subject['TIME'] <= fixcross_end_time))]
-
+            #fixation_image = processed_data_subject.copy()[((processed_data_subject['TIME'] >= fixcross_start_time) & (processed_data_subject['TIME'] <= fixcross_end_time))]
             #x_offset = fixation_image.mean()['BPOGX'] - 0.5
             #y_offset = fixation_image.mean()['BPOGY'] - 0.5
-
 
             # eye tracking data from stimulus onset till offset
             start_idx = processed_data_subject.USER.where(processed_data_subject.USER==f"STIMULI_ONSET_BLOCK_{block}_{image}").first_valid_index()
@@ -97,27 +95,15 @@ for subject in subjects:
             category = image.split('_')[1]
 
             # compute time to first fixation on roi
-            # first_fixation_idx = data_image['ROI'].idxmax()
-            # first_fixation_time = data_image.TIME.loc[first_fixation_idx]
-            # time_to_first_fixation = first_fixation_time - start_time
-
             first_fixation_idx = fixations_data['ROI'].idxmax()
             first_fixation_time = fixations_data.START.loc[first_fixation_idx]
             time_to_first_fixation = first_fixation_time - fixations_data.START.loc[0]
 
             # compute the dwell time on roi
-            # groups = data_image.groupby((data_image['ROI'].shift() != data_image['ROI']).cumsum())
-            # dwell_time = 0
-            # for name, group in groups:
-            #     if group.ROI.sum() != 0:
-            #         dwell_time += group['TIME'].iloc[-1] - group['TIME'].iloc[0]
-
             group_sum = fixations_data.groupby('ROI').sum()
             dwell_time = group_sum['DURATION'][True] if True in group_sum.index else 0
 
-
             # compute number of reentrys of roi
-            #reentering_roi_count = data_image['ROI'][data_image['ROI'].astype(int).diff() == 1].count()
             reentering_roi_count = fixations_data['ROI'][fixations_data['ROI'].astype(int).diff() == 1].count()
 
             # number of fixations in roi
@@ -133,7 +119,6 @@ for subject in subjects:
             # Add metrics to data frame
             analysis_metrics_subject.loc[image, 'SUBJECT'] = int(subject)
             analysis_metrics_subject.loc[image, 'BLOCK'] = block
-            #analysis_metrics_subject.loc[image, 'SCENE'] = scene
             analysis_metrics_subject.loc[image, 'OBJECT'] = image_information['obj_name'].item() 
             analysis_metrics_subject.loc[image, 'SCENE'] = image_information['sce_category'].item()
             analysis_metrics_subject.loc[image, 'CATEGORY'] = category

@@ -1,6 +1,6 @@
-# eyetracking-scegram
+# **eyetracking-scegram**
 
-# **Setup project and start pipeline**
+## **Setup project and start pipeline**
 
 1. Install Conda according to https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
 2. Create conda environment
@@ -23,9 +23,10 @@ pip install -r requirements.txt
 doit
 ```
 
-# **Files**
-- `data/raw/` raw eyetracking data (.tsv-files) of subjects
-- `data/fixed/` fixed and cleaned eyetracking data subject files 
-- `data/processed/` processed eyetracking data subject files 
+## **Files**
+- `data/` eyetracking data (.tsv-files) of subjects
+  - `data/raw/` raw eyetracking data (.tsv-files) of subjects
+  - `data/fixed/` fixed and cleaned eyetracking data subject files 
+  - `data/processed/` processed eyetracking data subject files 
 - `figures/` contains created figures
 - `tables/` contains .csv-files of tables

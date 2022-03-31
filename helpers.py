@@ -95,6 +95,7 @@ def plot(data, data_std, category, variable, ylabel, ymax, filename):
     plt.rc('font', size=30)
     plt.rc('xtick', top=False, bottom=False, labelbottom=False)
     plt.rc('figure', figsize=(20,10))
+    plt.rc('axes', axisbelow=True)
 
     value = [v for v in values]
     yerr = data_std
@@ -117,5 +118,45 @@ def plot(data, data_std, category, variable, ylabel, ymax, filename):
     plt.ylabel(ylabel, labelpad=40)
     plt.ylim(0, ymax)
     plt.tight_layout()
+    plt.grid(axis='y')
+    plt.savefig(filename)
+    plt.close()
+
+
+def plot_diff(data, category, variable, ylabel, ymin, ymax, filename):
+    """
+    Customized plots
+    """
+    labels = data[category]
+    values = data[variable]
+
+    colors = plt.get_cmap("tab10").colors
+    plt.rc('font', size=30)
+    plt.rc('xtick', top=False, bottom=False, labelbottom=False)
+    plt.rc('figure', figsize=(20,10))
+    plt.rc('axes', axisbelow=True)
+
+    value = [v for v in values]
+
+    bars = plt.bar(x = labels, height = values, color = colors, capsize=15)
+
+    for p in plt.gca().patches:
+        plt.gca().annotate(
+            f"{(p.get_height()):.2f}", 
+            (p.get_x() + p.get_width() / 2., p.get_height() + np.sign(p.get_height()) * 0.1 -0.04), 
+            ha = 'center', va = 'center', 
+            xytext = (0, 9), 
+            textcoords = 'offset points'
+        )
+
+    patches = list(bars)
+    legend_labels = [l for l in labels]
+
+    plt.legend(patches, legend_labels, bbox_to_anchor=(1.05, 1), loc="upper left")
+    plt.ylabel(ylabel, labelpad=40)
+    plt.axhline(y=0, color='black', linestyle='-')
+    plt.ylim(ymin, ymax)
+    plt.tight_layout()
+    plt.grid(axis='y')
     plt.savefig(filename)
     plt.close()
