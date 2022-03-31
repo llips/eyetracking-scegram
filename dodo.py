@@ -5,7 +5,7 @@ Definition of dodo tasks
 from config import fname, subjects, blocks
 
 
-DOIT_CONFIG = {'default_tasks': ['check', 'check_logs', 'preprocess', 'analyse', 'analyse_subjects', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi', 'figure_diff', 'figure_cross', 'figure_scenes']}
+DOIT_CONFIG = {'verbosity':0, 'always': True,'default_tasks': ['check', 'check_logs', 'preprocess', 'analyse', 'analyse_subjects', 'averages', 'figure_ttff', 'figure_dwell_time', 'figure_reentries_roi', 'figure_fixation_count_roi', 'figure_first_fixation_duration_roi', 'figure_average_fixation_duration_roi', 'figure_diff', 'figure_cross', 'figure_scenes']}
 
 
 def task_check():
@@ -29,6 +29,7 @@ def task_check_logs():
                   for subject in subjects] + ['00_check_logs.py'],
             targets=[fname.fixed_data_subject(subject=subject)],
             actions=[f'python 00_check_logs.py {subject} --fix'],
+            verbosity=0
         )
 
 def task_preprocess():
@@ -42,6 +43,7 @@ def task_preprocess():
                   for subject in subjects] + ['01_preprocessing.py'],
             targets=[fname.processed_data_subject(subject=subject)],
             actions=[f'python 01_preprocessing.py {subject}'],
+            verbosity=0
         )
 
 def task_analyse():
@@ -53,6 +55,7 @@ def task_analyse():
                   for subject in subjects] + ['02_analysis.py'],
         targets=[fname.analysis_metrics],
         actions=['python 02_analysis.py'],
+        verbosity=0
     )
 
 def task_analyse_subjects():
@@ -63,7 +66,7 @@ def task_analyse_subjects():
         yield dict(
             name=f'block-{block}',
             file_dep=['02a_subjects.py'],
-            #targets=[],
+            targets=[fname.overview_subject(block=block, subject=subject) for subject in subjects],
             actions=[f'python 02a_subjects.py {block}'],
         )
 
@@ -159,6 +162,7 @@ def task_figure_diff():
     """
     return dict(
         file_dep=[fname.analysis_metrics, '10_figure_differences.py'],
+        targets=[fname.figure_difference(measurement=variable) for variable in ['TTFF_DIFF', 'DWELL_TIME_DIFF', 'FIXATION_ROI_DIFF']],
         actions=['python 10_figure_differences.py'],
     )
 
