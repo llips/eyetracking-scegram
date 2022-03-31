@@ -18,7 +18,7 @@ from fnames import FileNames
 user = getpass.getuser()  # Username of the user running the scripts
 host = getfqdn()  # Hostname of the machine running the scripts
 
-# You want to add your machine to this list
+# You want to add your machine to this list as well as the path to the data dir with the raw files and the path to the scegram database
 if user == 'luis':
     data_dir = '/Users/luis/git/eyetracking-scegram/data'
     scegram_database = '/Users/luis/Documents/Universität/InformatikMaster/sem4/EyeTracking/semesterproject/SCEGRAM_Database'

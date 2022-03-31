@@ -16,7 +16,7 @@ conda activate eyetracking
 pip install -r requirements.txt
 ```
 
-5. Modify config.py and add your system to the list at the top, indication where your data is, how many cores you have on your machine, etc.
+5. Modify config.py and add your system to the list at the top, indication where your data folder is located as well where the scegram database folder lies and how many cores you have on your machine, etc.
 
 6. Start pipeline via doit
 ```console
